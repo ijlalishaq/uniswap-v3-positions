@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from include.utils.connections import add_gcp_connection
-from include.utils.dataset import add_dataset
+from include.utils.dataset import add_dataset, add_reference_tables
 
 from airflow.decorators import dag
 from airflow.operators.empty import EmptyOperator
@@ -27,6 +27,9 @@ def uniswap_v3_positions():
 
     _add_dataset = add_dataset()
 
-    begin >> _add_gcp_connection >> _add_dataset >> end
+    _add_reference_tables = add_reference_tables()
+
+    begin >> _add_gcp_connection >> _add_dataset
+    _add_dataset >> _add_reference_tables >> end
 
 uniswap_v3_positions()
