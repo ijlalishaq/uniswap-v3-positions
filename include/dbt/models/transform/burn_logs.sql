@@ -9,8 +9,8 @@ WITH decoded_log AS (
     topics[0] = '0x0c396cd989a39f4459b5fa1aed6a9a8dcdbc45908acfd67e028cd568da98982c'
 )
 
-SELECT 
-    LOWER(decoded_data.sender) as `sender`,
+-- The Burn event has no sender, only the owner
+SELECT
     LOWER(decoded_data.owner) as `owner`,
     decoded_data.tickLower as `tick_lower`,
     decoded_data.tickUpper as `tick_upper`,
