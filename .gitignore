@@ -10,6 +10,7 @@ webserver_config.py
 airflow.cfg
 airflow.db
 include/gcp/service_account.json
+include/soda/configuration.yml
 
 # dbt: build output, logs and the anonymous user id
 include/dbt/target/
