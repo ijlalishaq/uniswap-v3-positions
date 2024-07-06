@@ -20,10 +20,10 @@ burn_amounts AS (
 )
 
 SELECT
-    m.owner,
-    m.pool,
-    m.tick_lower,
-    m.tick_upper,
+    COALESCE(m.owner, b.owner) AS owner,
+    COALESCE(m.pool, b.pool) AS pool,
+    COALESCE(m.tick_lower, b.tick_lower) AS tick_lower,
+    COALESCE(m.tick_upper, b.tick_upper) AS tick_upper,
     COALESCE(m.mint_total_amount, 0) - COALESCE(b.burn_total_amount, 0) AS liquidity,
 FROM mint_amounts m
 FULL OUTER JOIN burn_amounts b

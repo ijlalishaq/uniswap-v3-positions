@@ -34,4 +34,4 @@ ON
 JOIN
     {{ref('pm_nfts')}} nft
 ON
-    inc.token_id = nft.token_id
+    COALESCE(inc.token_id, dec.token_id) = nft.token_id
