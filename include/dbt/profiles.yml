@@ -5,8 +5,8 @@ uniswap_v3_positions:
       type: bigquery
       method: service-account
       keyfile: /usr/local/airflow/include/gcp/service_account.json
-      project: your-gcp-project
-      dataset: uniswap_v3_positions
+      project: "{{ env_var('GCP_PROJECT', 'your-gcp-project') }}"
+      dataset: "{{ env_var('BQ_DATASET', 'uniswap_v3_positions') }}"
       threads: 1
       timeout_seconds: 500
       location: US

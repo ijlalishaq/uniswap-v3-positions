@@ -1,7 +1,7 @@
 WITH liquidity_mint_logs AS (
     SELECT
         *,
-        `your-gcp-project.uniswap_v3_positions.decode_mint_log`(data, topics) AS decoded_data
+        `{{ target.project }}.{{ target.dataset }}.decode_mint_log`(data, topics) AS decoded_data
     FROM 
         {{ref('filtered_logs')}}
     WHERE

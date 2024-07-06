@@ -1,8 +1,10 @@
 version: 2
 
 sources:
+  # Views over bigquery-public-data.crypto_ethereum, created by the add_reference_tables task
   - name: uniswap_v3_positions
-    database: your-gcp-project
+    database: "{{ target.project }}"
+    schema: "{{ target.dataset }}"
 
     tables:
       - name: blocks

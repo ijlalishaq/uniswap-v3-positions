@@ -1,6 +1,6 @@
 WITH decoded_log AS (
   SELECT
-    `your-gcp-project.uniswap_v3_positions.decode_decrease_liquidity_log`(data, topics) AS decoded_data
+    `{{ target.project }}.{{ target.dataset }}.decode_decrease_liquidity_log`(data, topics) AS decoded_data
   FROM 
     {{ ref('filtered_logs') }}
   WHERE 

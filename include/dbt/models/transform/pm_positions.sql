@@ -7,7 +7,7 @@ SELECT
     pl.tick_upper,
     pc.tick,
     pc.fee,
-    `your-gcp-project.uniswap_v3_positions.decode_position`(
+    `{{ target.project }}.{{ target.dataset }}.decode_position`(
         1,
         pc.token_0,
         pc.token_1,

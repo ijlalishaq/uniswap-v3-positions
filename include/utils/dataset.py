@@ -1,39 +1,40 @@
-from include.utils.connections import gcp_conn_id
+from include.utils.settings import BQ_DATASET, GCP_CONN_ID, GCP_PROJECT
 
 from airflow.providers.google.cloud.operators.bigquery import BigQueryCreateEmptyDatasetOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryExecuteQueryOperator
 
-project = 'your-gcp-project'
-dataset_id = 'uniswap_v3_positions'
+project = GCP_PROJECT
+dataset_id = BQ_DATASET
 
 def add_dataset():
     return BigQueryCreateEmptyDatasetOperator(
         task_id = 'add_dataset',
+        project_id = project,
         dataset_id = dataset_id,
-        gcp_conn_id = gcp_conn_id,
+        gcp_conn_id = GCP_CONN_ID,
         if_exists = 'skip',
         trigger_rule='all_done',
     )
 
 def add_reference_tables():
     query = f"""
-        CREATE OR REPLACE VIEW `{dataset_id}.blocks` AS
+        CREATE OR REPLACE VIEW `{project}.{dataset_id}.blocks` AS
         SELECT *
         FROM `bigquery-public-data.crypto_ethereum.blocks`;
 
-        CREATE OR REPLACE VIEW `{dataset_id}.transactions` AS
+        CREATE OR REPLACE VIEW `{project}.{dataset_id}.transactions` AS
         SELECT *
         FROM `bigquery-public-data.crypto_ethereum.transactions`;
 
-        CREATE OR REPLACE VIEW `{dataset_id}.logs` AS
+        CREATE OR REPLACE VIEW `{project}.{dataset_id}.logs` AS
         SELECT *
         FROM `bigquery-public-data.crypto_ethereum.logs`;
 
-        CREATE OR REPLACE VIEW `{dataset_id}.traces` AS
+        CREATE OR REPLACE VIEW `{project}.{dataset_id}.traces` AS
         SELECT *
         FROM `bigquery-public-data.crypto_ethereum.traces`;
         
-        CREATE OR REPLACE VIEW `{dataset_id}.tokens` AS
+        CREATE OR REPLACE VIEW `{project}.{dataset_id}.tokens` AS
         SELECT *
         FROM `bigquery-public-data.crypto_ethereum.tokens`;
 
@@ -417,7 +418,7 @@ def add_reference_tables():
         
         
         /* Function to decode uniswap v3 positions */
-        CREATE OR REPLACE FUNCTION `your-gcp-project.uniswap_v3_positions.decode_position`(
+        CREATE OR REPLACE FUNCTION `{project}.{dataset_id}.decode_position`(
             chain INT64,
             token0 STRING,
             token1 STRING,
@@ -462,6 +463,6 @@ def add_reference_tables():
         task_id ='add_reference_tables',
         sql = query,
         use_legacy_sql = False,
-        gcp_conn_id = 'gcp',
+        gcp_conn_id = GCP_CONN_ID,
         trigger_rule='all_done',  
     )
