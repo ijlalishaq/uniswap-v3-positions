@@ -25,7 +25,6 @@ def uniswap_v3_positions():
     _add_gcp_connection = PythonOperator(
         task_id='add_gcp_connection',
         python_callable=add_gcp_connection,
-        provide_context=True,
         trigger_rule='all_done',
     )
 
